@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  my-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/myfolder/src
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env.dev
+    # enviroment:
+    #   - TZ=Asia/Seoul
+
+  my-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    # enviroment:
+    #   - TZ=Asia/Seoul
+
+  elasticsearch:
+    image: elasticsearch:7.17.0
+    environment:
+      discovery.type: single-node
+    ports:
+      - 9200:9200
+
+  logstash:
+    image: logstash:7.17.0
+    volumes:
+      - ./elk/logstash/freeBoard.dev.conf:/usr/share/logstash/pipeline/freeBoard.dev.conf
+      - ./elk/logstash/mysql-connector-java-8.0.28.jar:/usr/share/logstash/mysql-connector-java-8.0.28.jar
+      - ./elk/logstash/freeBoard.json:/usr/share/logstash/freeBoard.json
+      - ./elk/logstash/cafeBoard.dev.conf:/usr/share/logstash/pipeline/cafeBoard.dev.conf
+      - ./elk/logstash/cafeBoard.json:/usr/share/logstash/templates/cafeBoard.json
+      - ./elk/logstash/pipelines.dev.yml:/usr/share/logstash/path.settings/pipelines.dev.yml

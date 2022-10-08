@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  my-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/myfolder/src
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env
+
+  my-database:
+    platform: linux/x86_64
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: 'teamcloud04'
+      MYSQL_ROOT_PASSWORD: '3198'
+    ports:
+      - 3306:3306
+
+  my-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  elasticsearch:
+    image: elasticsearch:7.17.0
+    depends_on:
+      - my-database
+    environment:
+      discovery.type: single-node
+    ports:
+      - 9200:9200
+
+  logstash:
+    image: logstash:7.17.0
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./elk/logstash/mysql-connector-java-8.0.28.jar:/usr/share/logstash/mysql-connector-java-8.0.28.jar
+      - ./elk/logstash/freeBoard.conf:/usr/share/logstash/pipeline/freeBoard.conf
+      - ./elk/logstash/freeBoard.json:/usr/share/logstash/templates/freeBoard.json
+      - ./elk/logstash/cafeBoard.conf:/usr/share/logstash/pipeline/cafeBoard.conf
+      - ./elk/logstash/cafeBoard.json:/usr/share/logstash/templates/cafeBoard.json
+      - ./elk/logstash/pipelines.yml:/usr/share/logstash/path.settings/pipelines.yml
