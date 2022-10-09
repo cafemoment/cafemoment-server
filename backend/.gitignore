@@ -3,7 +3,7 @@
 /node_modules
 .env*
 /src/commons/graphql/schema.gql
-reflected-jet-360811-402430377c02.json
+reflected-jet-360811-36eb65a5d06e.json
 logstash.conf
 /elk/logstash/pipelines.yml
 
