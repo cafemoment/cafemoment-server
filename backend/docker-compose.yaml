@@ -45,4 +45,4 @@ services:
       - ./elk/logstash/freeBoard.json:/usr/share/logstash/templates/freeBoard.json
       - ./elk/logstash/cafeBoard.conf:/usr/share/logstash/pipeline/cafeBoard.conf
       - ./elk/logstash/cafeBoard.json:/usr/share/logstash/templates/cafeBoard.json
-      - ./elk/logstash/pipelines.yml:/usr/share/logstash/path.settings/pipelines.yml
+      - ./elk/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml

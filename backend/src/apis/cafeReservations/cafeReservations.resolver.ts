@@ -1,4 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
+import { IContext } from 'src/commons/type/context';
 import { CafeReservationsService } from './cafeReservations.service';
 import { CreateReservationInput } from './dto/createReservation.input';
 import { CafeReservation } from './entities/cafeReservations.entity';
@@ -43,14 +46,29 @@ export class CafeReservationsResolver {
   }
 
   /** 카페 예약하기 */
-  // @UseGuards(GqlAuthAccessGuard)
+  @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => CafeReservation)
   createCafeReservation(
     @Args('createReservationInput')
     createReservationInput: CreateReservationInput,
+    @Context() context: IContext,
   ) {
     return this.cafeReservationsService.create({
       createReservationInput,
+      context,
+    });
+  }
+
+  /** 카페 예약 취소하기 */
+  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => Boolean)
+  cancelCafeReservation(
+    @Args('cafeReservationId') cafeReservationId: string, //
+    @Context() context: IContext,
+  ) {
+    return this.cafeReservationsService.cancel({
+      context,
+      cafeReservationId,
     });
   }
 }
