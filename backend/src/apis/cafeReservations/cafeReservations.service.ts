@@ -47,13 +47,13 @@ export class CafeReservationsService {
     });
   }
 
-  async create({ createReservationInput }): Promise<CafeReservation[]> {
-    const { userId, cafeBoardId } = createReservationInput;
+  async create({
+    createReservationInput,
+    context,
+  }): Promise<CafeReservation[]> {
+    const { cafeBoardId } = createReservationInput;
+    const userId = context.req.user.id;
 
-    const user = this.usersService.findOne({ userId });
-    if (!user) {
-      throw new NotFoundException('해당하는 유저가 없습니다');
-    }
     const cafeBoard = await this.cafeBoardsRepository.findOne({
       where: { id: cafeBoardId },
     });
@@ -70,5 +70,20 @@ export class CafeReservationsService {
       cafeBoard: cafeBoardId,
     });
     return result;
+  }
+
+  async cancel({ cafeReservationId, context }): Promise<boolean> {
+    const userEmail = context.req.user.email;
+    const cafeReservation = await this.cafeReservationsRepository.findOne({
+      where: { id: cafeReservationId },
+      relations: ['user'],
+    });
+    if (cafeReservation.user.email !== userEmail)
+      throw new NotFoundException('예약 내역이 존재하지 않습니다.');
+
+    const result = await this.cafeReservationsRepository.softDelete({
+      id: cafeReservationId,
+    });
+    return result.affected ? true : false;
   }
 }

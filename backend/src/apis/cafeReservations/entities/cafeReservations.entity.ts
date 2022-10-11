@@ -1,7 +1,13 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CafeBoard } from 'src/apis/cafeBoards/entities/cafeBoard.entity';
 import { User } from 'src/apis/users/entites/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  DeleteDateColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -49,4 +55,8 @@ export class CafeReservation {
   @ManyToOne(() => User)
   @Field(() => User)
   user: User;
+
+  @DeleteDateColumn({ nullable: true })
+  @Field(() => Date, { nullable: true })
+  deletedAt: Date;
 }

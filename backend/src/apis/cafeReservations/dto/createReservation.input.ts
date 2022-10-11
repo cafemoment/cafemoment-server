@@ -19,7 +19,4 @@ export class CreateReservationInput {
 
   @Field(() => String)
   cafeBoardId: string;
-
-  @Field(() => String)
-  userId: string;
 }
