@@ -17,6 +17,7 @@ import type { RedisClientOptions } from 'redis';
 import { FileModule } from './apis/files/file.module';
 import { ChatModule } from './apis/chat/chat.module';
 import { LikesModule } from './apis/likes/likes.module';
+import { AdminModule } from './apis/admin/admins.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { LikesModule } from './apis/likes/likes.module';
     TagsModule,
     UsersModule,
     ChatModule,
+    AdminModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       // playground: false,
