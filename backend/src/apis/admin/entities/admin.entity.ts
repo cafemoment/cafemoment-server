@@ -13,6 +13,5 @@ export class Admin {
   adminId: string;
 
   @Column()
-  @Field(() => String, { description: '관리자 비밀번호' })
   password: string;
 }
