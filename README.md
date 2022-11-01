@@ -23,7 +23,6 @@
 
 ## 1. 프로젝트 소개
 ### 프로젝트명: 카페모먼트(Cafemoment)
-### 프로젝트 페이지: https://cafemoment.shop
 ### 백엔드 페이지: https://cafemoment-backend.shop/graphql
 ### 소개글
 >혹시 길을 걷다 우연히 그동안 발견하지 못했던 특별한 매력을 가진 카페를 찾아본 적 있으신가요?<br>
