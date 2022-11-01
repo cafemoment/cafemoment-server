@@ -1,0 +1,54 @@
+{
+  "template": "cafeboard",
+  "index_patterns": ["cafeboard"],
+  "settings": {
+    "index": {
+      "max_ngram_diff": "20"
+    },
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "type": "custom",
+          "tokenizer": "my_tokenizer",
+          "filter": ["my_words_filter", "lowercase"]
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "nGram",
+          "min_gram": "1",
+          "max_gram": "10"
+        }
+      },
+      "filter": {
+        "my_words_filter": {
+          "type": "stop",
+          "ignore_case": true,
+          "stopwords": ["and", "is", "the", "_cjk_", "는", "은", "이다"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "store": true,
+        "analyzer": "my_analyzer",
+        "search_analyzer": "standard"
+      },
+      "contents": {
+        "type": "text",
+        "store": true,
+        "analyzer": "my_analyzer",
+        "search_analyzer": "standard"
+      },
+      "address": {
+        "type": "text",
+        "store": true,
+        "analyzer": "my_analyzer",
+        "search_analyzer": "standard"
+      }
+    }
+  }
+}

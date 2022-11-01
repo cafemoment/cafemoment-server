@@ -1,0 +1,41 @@
+  cafeBoard.service.ts
+  
+  async saveImage({ images, result }) {
+    await Promise.all(
+      images.map(
+        (el, idx) =>
+          new Promise((resolve, reject) => {
+            this.imagesRepository.save({
+              iaMain: idx === 0 ? true : false,
+              url: el,
+              cafeBoard: { id: result.id },
+            });
+            resolve('이미지 저장 완료');
+            reject('이미지 저장 실패');
+          }),
+      ),
+    );
+  }
+
+  ======================================================================
+
+  freeBoard.service.ts
+  /** 게시글 수정 */
+  async updateBoard({
+    userEmail,
+    boardId,
+    nickName,
+    updateFreeBoardInput,
+    context,
+  }) {
+    const board = await this.findBoardOne({ boardId });
+    const user = context.req.user.id;
+    if (!board)
+      throw new UnprocessableEntityException('등록된 게시글이 없습니다.');
+    if (!user)
+      throw new ConflictException(`${nickName}님의 게시글이 아닙니다.`);
+
+    return this.update({ userEmail, boardId, updateFreeBoardInput });
+  }
+
+======================================================================
